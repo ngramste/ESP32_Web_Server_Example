@@ -1,22 +1,15 @@
 <!DOCTYPE HTML>
 <html lang="en">
   <head>
-    <title>Colors!</title>
+    <title>ESP32</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/local.css">
   </head>
-  <body class="w3-theme-l4">
-    <div id="colorPicker">
-      <div id="selectedColor"></div>
-      <button id="power" onclick="turnoff()">Off</button>
-      <button id="rainbow" onclick="rainbow()">Rainbow</button>
-      <input type="range" min="0" max="255" value="128" class="slider" id="r" oninput="updateAPI(this, false)" onchange="updateAPI(this, true)">
-      <input type="range" min="0" max="255" value="128" class="slider" id="g" oninput="updateAPI(this, false)" onchange="updateAPI(this, true)">
-      <input type="range" min="0" max="255" value="128" class="slider" id="b" oninput="updateAPI(this, false)" onchange="updateAPI(this, true)">
-      <input type="range" min="0" max="255" value="128" class="slider" id="l" oninput="updateAPI(this, false)" onchange="updateAPI(this, true)">
-    </div>
+
+  <body>
+    <table id="pinInterface"></table>
+    <script src="./js/main.js"></script>
   </body>
 
-  <script src="./js/color.js"></script>
 </html>

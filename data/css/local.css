@@ -4,78 +4,71 @@
 }
 
 body {
-  background-color: black;
-  overflow: hidden;
-}
-
-#colorPicker {
-  display: grid;
-  grid-template-areas: 'color color' 'power off' 'r r' 'g g' 'b b' 'l l';
-  grid-template-rows: 40vh 12vh 12vh 12vh 12vh 12vh;
-  grid-template-columns: 50vw 50vw;
-}
-
-#selectedColor {
-  grid-area: color;
-  background-color: gray;
-}
-
-input {
-  display: block;
-  margin: 2vw 4vw;
-}
-
-button {
-  margin: 2vw 4vw;
-  font-size: 5vh;
-  border: solid #00536e;
-  background-color: #008CBA;
+  background-color: #1E1E1E;
+  font-family: Arial, Helvetica, sans-serif;
   color: white;
-  border-radius: 20px;
+  font-size: 34px;
 }
 
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 1vw;
-  height: 11vh;
-  border-radius: 0%;
-  background: #05bcc2;
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
   cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
 }
 
-.slider::-moz-range-thumb {
-  width: 1vw;
-  height: 11vh;
-  border-radius: 0%;
-  background: #05bcc2;
-  cursor: pointer;
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
 }
 
-#r {
-  grid-area: r;
-  -webkit-appearance: none;
-  background-image: linear-gradient(to left, red, black);
-  border: solid black;
+input:checked + .slider {
+  background-color: #2196F3;
 }
 
-#g {
-  grid-area: g;
-  -webkit-appearance: none;
-  background-image: linear-gradient(to left, green, black);
-  border: solid black;
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
 }
 
-#b {
-  grid-area: b;
-  -webkit-appearance: none;
-  background-image: linear-gradient(to left, blue, black);
-  border: solid black;
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
 }
 
-#l {
-  grid-area: l;
-  -webkit-appearance: none;
-  background-image: linear-gradient(to left, white, black);
-  border: solid black;
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }

@@ -69,7 +69,6 @@ class MyHandler : public RequestHandler {
   }
 
   void handleNotFound() {
-    digitalWrite(led, 1);
     String message = "File Not Found\n\n";
     message += "URI: ";
     message += server.uri();
@@ -84,12 +83,11 @@ class MyHandler : public RequestHandler {
     }
 
     server.send(404, "text/plain", message);
-    digitalWrite(led, 0);
   }
 
   void handleAPICall() {
     String response;
-    int r, g, b, l;
+    int pin, value;
 
     if (server.method() == HTTP_GET) {
       server.send(400, "text/plain", "Bad request");
@@ -97,19 +95,15 @@ class MyHandler : public RequestHandler {
     }
 
     for (uint8_t i = 0; i < server.args(); i++) {
-      if (server.argName(i).equals("r")) r = server.arg(i).toInt();
-      if (server.argName(i).equals("g")) g = server.arg(i).toInt();
-      if (server.argName(i).equals("b")) b = server.arg(i).toInt();
-      if (server.argName(i).equals("l")) l = server.arg(i).toInt();
+      if (server.argName(i).equals("p")) pin = server.arg(i).toInt();
+      if (server.argName(i).equals("v")) value = server.arg(i).toInt();
     }
 
-    response = String(r);
+    digitalWrite(pin, value);
+
+    response = String(pin);
     response += ",";
-    response += String(g);
-    response += ",";
-    response += String(b);
-    response += ",";
-    response += String(l);
+    response += String(value);
 
     Serial.println(response);
     server.send(200, "text/plain", response);
@@ -150,8 +144,12 @@ bool initFileSystem(void) {
 }
 
 void setup(void) {
-  pinMode(led, OUTPUT);
-  digitalWrite(led, 0);
+  for (int i = 0; i < 36; i++) {
+    if (i != 6) {
+      pinMode(i, OUTPUT);
+    }
+  }
+
   Serial.begin(115200);
 
   // Configure the wifi connection
@@ -175,43 +173,3 @@ void loop(void) {
   server.handleClient();
   // MDNS.update();
 }
-
-
-#ifdef NOTES_FOR_LATER
-
-void setup()
-{
-  // put your setup code here, to run once:
-  Serial.begin(115200);
-
-  if (!SPIFFS.begin(true))
-  {
-    Serial.println("An Error has occurred while mounting SPIFFS");
-    return;
-  }
-
-  File file = SPIFFS.open("/text.txt");
-  if (!file)
-  {
-    Serial.println("Failed to open file for reading");
-    return;
-  }
-
-  Serial.print("File Content: ");
-  while (file.available())
-  {
-    Serial.write(file.read());
-  }
-  file.close();
-
-  Serial.println("");
-}
-
-void loop()
-{
-  // put your main code here, to run repeatedly:
-  sleep(1);
-  printHello();
-}
-
-#endif
