@@ -17,20 +17,6 @@ function updateAPI (pin) {
   xhr.send();
 }
 
-function getStates () {
-  var xhr = new XMLHttpRequest();
-  xhr.withCredentials = true;
-
-  xhr.addEventListener("readystatechange", function() {
-    if(this.readyState === 4) {
-      console.log(this.responseText);
-    }
-  });
-
-  xhr.open("POST", "./api");
-  xhr.send();
-}
-
 function buildInterface() {
   var pin = 0;
   var interface = document.getElementById("pinInterface");

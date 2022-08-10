@@ -87,7 +87,8 @@ class MyHandler : public RequestHandler {
 
   void handleAPICall() {
     String response;
-    int pin, value;
+    int pin = -1;
+    int value = -1;
 
     if (server.method() == HTTP_GET) {
       server.send(400, "text/plain", "Bad request");
@@ -99,7 +100,9 @@ class MyHandler : public RequestHandler {
       if (server.argName(i).equals("v")) value = server.arg(i).toInt();
     }
 
-    digitalWrite(pin, value);
+    if (pin != -1 && value != -1) {
+      digitalWrite(pin, value);
+    }
 
     response = String(pin);
     response += ",";
