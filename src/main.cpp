@@ -7,10 +7,8 @@
 #include <SPI.h>
 #include <ESPmDNS.h>
 
-char configFile[] = "network.conf";
-
-const char* ssid = "FireNetwork 7";
-const char* password = "25quarters";
+const char* ssid = "";
+const char* password = "";
 #define host_name "esp32"
 
 WebServer server(80);
