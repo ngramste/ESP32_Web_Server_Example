@@ -82,7 +82,7 @@ class MyHandler : public RequestHandler {
   }
 
   void handleAPICall() {
-    char response[100];
+    char response[1024] = {'\0'};
     int pin = -1;
     int value = -1;
 
@@ -100,7 +100,7 @@ class MyHandler : public RequestHandler {
       digitalWrite(pin, value);
     }
 
-    sprintf(response, "{pin: %d, enabled: %d}", pin, value);
+    sprintf(response, "{\"pin\": %d, \"enabled\": %d}", pin, value);
 
     Serial.println(response);
     server.send(200, "text/plain", response);
@@ -121,7 +121,6 @@ bool initWifi() {
 
   Serial.printf("\nConnected to: %s\n", WIFI_SSID);
   Serial.printf("IP address: %s\n", WiFi.localIP().toString());
-  Serial.printf("Hostname: %s\n", host_name);
 
   return true;
 }
@@ -151,7 +150,7 @@ void setup(void) {
   if (!initWifi()) return;
 
   if (MDNS.begin(host_name)) {
-    Serial.println("MDNS responder started");
+    Serial.printf("Hostname: %s-arduino\n", host_name);
   }
 
   server.addHandler (&myHandler);

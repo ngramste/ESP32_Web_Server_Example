@@ -3,11 +3,11 @@ function updateAPI (pin) {
   xhr.withCredentials = true;
 
   var value = document.getElementById("gpio_" + pin).checked?1:0;
-  console.log(pin, value);
 
   xhr.addEventListener("readystatechange", function() {
     if(this.readyState === 4) {
-      console.log(this.responseText);
+      var states = JSON.parse(this.responseText);
+      console.log(states);
     }
   });
 
