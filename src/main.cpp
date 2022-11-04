@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "SPIFFS.h"
+#include "LittleFS.h"
 
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -7,8 +7,6 @@
 #include <SPI.h>
 #include <ESPmDNS.h>
 
-const char* ssid = "";
-const char* password = "";
 #define host_name "esp32"
 
 WebServer server(80);
@@ -30,7 +28,7 @@ class MyHandler : public RequestHandler {
       return true;
     }
 
-    File fd = SPIFFS.open(requestUri);
+    File fd = LittleFS.open(requestUri);
     if (!fd) {
       handleNotFound();
     } else {
@@ -115,8 +113,7 @@ class MyHandler : public RequestHandler {
 
 bool initWifi() {
   WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
-  Serial.println("");
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
 
   // Wait for connection
   while (WiFi.status() != WL_CONNECTED) {
@@ -124,20 +121,16 @@ bool initWifi() {
     Serial.print(".");
   }
 
-  Serial.println("");
-  Serial.print("Connected to ");
-  Serial.println(ssid);
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
-  Serial.print("Hostname: ");
-  Serial.println(host_name);
+  Serial.printf("\nConnected to: %s\n", WIFI_SSID);
+  Serial.printf("IP address: %s\n", WiFi.localIP().toString());
+  Serial.printf("Hostname: %s\n", host_name);
 
   return true;
 }
 
 bool initFileSystem(void) {
-  if (!SPIFFS.begin(true)) {
-    Serial.println("An Error has occurred while mounting SPIFFS");
+  if (!LittleFS.begin(true)) {
+    Serial.println("An Error has occurred while mounting LittleFS");
     return false;
   }
 
@@ -145,15 +138,15 @@ bool initFileSystem(void) {
 }
 
 void setup(void) {
-  for (int i = 0; i < 36; i++) {
-    if (i != 6) {
-      pinMode(i, OUTPUT);
-    }
-  }
 
   Serial.begin(115200);
 
-  // Configure the wifi connection
+  pinMode(2, OUTPUT);
+  for (int pin = 12; pin < 24; pin++) {
+    pinMode(pin, OUTPUT);
+  }
+
+  // Configure the filesystem connection
   if (!initFileSystem()) return;
 
   // Configure the wifi connection
@@ -172,5 +165,4 @@ void setup(void) {
 
 void loop(void) {
   server.handleClient();
-  // MDNS.update();
 }
