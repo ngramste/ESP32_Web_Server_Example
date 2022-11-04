@@ -13,8 +13,6 @@ const char* password = "";
 
 WebServer server(80);
 
-const int led = 13;
-
 class MyHandler : public RequestHandler {
   bool canHandle(HTTPMethod method, String uri) {
     return uri.startsWith( "/" );
