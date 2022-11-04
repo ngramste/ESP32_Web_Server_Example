@@ -82,7 +82,7 @@ class MyHandler : public RequestHandler {
   }
 
   void handleAPICall() {
-    String response;
+    char response[100];
     int pin = -1;
     int value = -1;
 
@@ -100,9 +100,7 @@ class MyHandler : public RequestHandler {
       digitalWrite(pin, value);
     }
 
-    response = String(pin);
-    response += ",";
-    response += String(value);
+    sprintf(response, "{pin: %d, enabled: %d}", pin, value);
 
     Serial.println(response);
     server.send(200, "text/plain", response);
